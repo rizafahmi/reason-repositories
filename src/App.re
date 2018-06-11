@@ -1,6 +1,6 @@
 [%bs.raw {|require('./App.css')|}];
 
-type state = {repositories: RepoData.repo};
+type state = {repositories: option(RepoData.repo)};
 let component = ReasonReact.reducerComponent("App");
 
 let dummyRepo: RepoData.repo = {
@@ -11,15 +11,19 @@ let dummyRepo: RepoData.repo = {
 
 let make = (~title, _children) => {
   ...component,
-  initialState: () => {repositories: dummyRepo},
+  initialState: () => {repositories: Some(dummyRepo)},
   reducer: ((), _) => ReasonReact.NoUpdate,
-  render: self =>
+  render: self => {
+    let repoItem =
+      switch (self.state.repositories) {
+      | Some(repositories) => <RepoItem repositories />
+      | None => <Loading />
+      };
     <div className="container">
       <div className="page-header">
         <h1 className="page-header__title"> (ReasonReact.string(title)) </h1>
       </div>
-      <div className="bx--grid content">
-        <RepoItem repositories=self.state.repositories />
-      </div>
-    </div>,
+      <div className="bx--grid content"> repoItem </div>
+    </div>;
+  },
 };

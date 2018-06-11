@@ -1,9 +1,10 @@
 .page-header {
-  margin-top: 48px;
+  padding-top: 48px;
   padding-left: 32px;
   padding-right: 32px;
   padding-bottom: 16px;
   border-bottom: 1px solid #3057d5;
+  background-color: #f4f7fb;
 }
 .content {
   margin-top: 64px;
