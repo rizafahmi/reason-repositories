@@ -1,22 +1,25 @@
 [%bs.raw {|require('./App.css')|}];
 
-let component = ReasonReact.statelessComponent("App");
+type state = {repositories: RepoData.repo};
+let component = ReasonReact.reducerComponent("App");
+
+let dummyRepo: RepoData.repo = {
+  name: "facebook/reason",
+  stargazers_count: 5841,
+  url: "https://github.com/facebook/reason",
+};
 
 let make = (~title, _children) => {
   ...component,
-  render: _self => {
-    let dummyRepo: RepoData.repo = {
-      name: "facebook/reason",
-      stargazers_count: 5841,
-      url: "https://github.com/facebook/reason",
-    };
+  initialState: () => {repositories: dummyRepo},
+  reducer: ((), _) => ReasonReact.NoUpdate,
+  render: self =>
     <div className="container">
       <div className="page-header">
         <h1 className="page-header__title"> (ReasonReact.string(title)) </h1>
       </div>
       <div className="bx--grid content">
-        <RepoItem repositories=dummyRepo />
+        <RepoItem repositories=self.state.repositories />
       </div>
-    </div>;
-  },
+    </div>,
 };
