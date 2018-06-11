@@ -1,15 +1,22 @@
 [%bs.raw {|require('./App.css')|}];
 
 type action =
-  | Loaded(RepoData.repo);
-type state = {repositories: option(RepoData.repo)};
+  | Loaded(array(RepoData.repo));
+type state = {repositories: option(array(RepoData.repo))};
 let component = ReasonReact.reducerComponent("App");
 
-let dummyRepo: RepoData.repo = {
-  name: "facebook/reason",
-  stargazers_count: 5841,
-  url: "https://github.com/facebook/reason",
-};
+let dummyRepo: array(RepoData.repo) = [|
+  {
+    name: "facebook/reason",
+    stargazers_count: 5841,
+    url: "https://github.com/facebook/reason",
+  },
+  {
+    name: "jaredpalmer/razzle",
+    stargazers_count: 4134,
+    url: "https://github.com/jaredpalmer/razzle",
+  },
+|];
 
 let make = (~title, _children) => {
   ...component,
@@ -26,7 +33,13 @@ let make = (~title, _children) => {
       </button>;
     let repoItem =
       switch (self.state.repositories) {
-      | Some(repositories) => <RepoItem repositories />
+      | Some(repositories) =>
+        ReasonReact.arrayToElement(
+          Array.map(
+            (repositories: RepoData.repo) => <RepoItem repositories />,
+            repositories,
+          ),
+        )
       | None => loadButton
       };
     <div className="container">
