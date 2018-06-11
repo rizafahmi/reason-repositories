@@ -53,6 +53,13 @@ let make = (~title, _children) => {
         <h1 className="page-header__title"> (ReasonReact.string(title)) </h1>
       </div>
       <div className="bx--grid content"> repoItem </div>
+      <footer className="page-footer">
+        <div className="page-footer__content">
+          <p className="page-footer__text">
+            (ReasonReact.string("Copyright 2018 Riza Fahmi"))
+          </p>
+        </div>
+      </footer>
     </div>;
   },
 };
